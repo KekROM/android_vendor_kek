@@ -1,0 +1,8 @@
+[
+  {
+    "account": "githubaccount",
+    "repository": "android_device_lol_test",
+    "target_path": "device/lol/test",
+    "revision": "branch"
+  }
+]
