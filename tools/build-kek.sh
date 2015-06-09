@@ -27,28 +27,21 @@ usage() {
     echo -e "    -c# Cleaning options before build:"
     echo -e "        1 - Run make clean"
     echo -e "        2 - Run make installclean"
-    echo -e "    -d  Build rom without ccache"
     echo -e "    -e# Extra build output options:"
     echo -e "        1 - Verbose build output"
     echo -e "        2 - Quiet build output"
     echo -e "    -j# Set number of jobs"
     echo -e "    -k  Rewrite roomservice after dependencies update"
-    echo -e "    -i  Ignore minor errors during build"
     echo -e "    -r  Reset source tree before build"
-    echo -e "    -s# Sync options before build:"
-    echo -e "        1 - Normal sync"
-    echo -e "        2 - Make snapshot"
-    echo -e "        3 - Restore previous snapshot, then snapshot sync"
     echo -e "    -o# Only build:"
     echo -e "        1 - Boot Image"
     echo -e "        2 - Recovery Image"
-    echo -e "    -p  Build using pipe"
     echo -e "    -w  Log file options:"
     echo -e "        1 - Send warnings and errors to a log file"
     echo -e "        2 - Send all output to a log file"
     echo ""
     echo -e "${bldblu}  Example:${bldcya}"
-    echo -e "    ./build-kek.sh -c1 shamu"
+    echo -e "    ./build-kek.sh -c1 tomato"
     echo -e "${rst}"
     exit 1
 }
@@ -117,30 +110,21 @@ fi
 
 
 opt_clean=0
-opt_ccache=0
 opt_extra=0
 opt_jobs="$CPUS"
 opt_kr=0
-opt_ignore=0
 opt_only=0
-opt_pipe=0
 opt_reset=0
-opt_sync=0
 opt_log=0
-
 
 while getopts "ab:c:de:fj:kilo:prs:w:" opt; do
     case "$opt" in
     c) opt_clean="$OPTARG" ;;
-    d) opt_ccache=1 ;;
     e) opt_extra="$OPTARG" ;;
     j) opt_jobs="$OPTARG" ;;
     k) opt_kr=1 ;;
-    i) opt_ignore=1 ;;
     o) opt_only="$OPTARG" ;;
-    p) opt_pipe=1 ;;
     r) opt_reset=1 ;;
-    s) opt_sync="$OPTARG" ;;
     w) opt_log="$OPTARG" ;;
     *) usage
     esac
@@ -152,14 +136,6 @@ if [ "$#" -ne 1 ]; then
 fi
 device="$1"
 
-
-# Ccache options
-if [ "$opt_ccache" -eq 1 ]; then
-    echo -e "${bldcya}Ccache not be used in this build${rst}"
-    unset USE_CCACHE
-    echo ""
-fi
-
 # Kek device dependencies
 echo -e "${bldcya}Looking for Kek product dependencies${bldgrn}"
 if [ "$opt_kr" -ne 0 ]; then
@@ -168,25 +144,6 @@ else
     vendor/kek/tools/getdependencies.py "$device"
 fi
 echo -e "${rst}"
-
-
-# Check if last build was made ignoring errors
-# Set if unset
-if [ -f ".ignore_err" ]; then
-   : ${TARGET_IGNORE_ERRORS:=$(cat .ignore_err)}
-else
-   : ${TARGET_IGNORE_ERRORS:=false}
-fi
-
-export TARGET_IGNORE_ERRORS
-
-if [ "$TARGET_IGNORE_ERRORS" == "true" ]; then
-   opt_clean=1
-   echo -e "${bldred}Last build ignored errors. Cleaning Out${rst}"
-   unset TARGET_IGNORE_ERRORS
-   echo -e "false" > .ignore_err
-fi
-
 
 # Cleaning out directory
 if [ "$opt_clean" -eq 1 ]; then
@@ -217,48 +174,6 @@ if [ "$opt_reset" -ne 0 ]; then
     echo ""
 fi
 
-# Repo sync/snapshot
-if [ "$opt_sync" -eq 1 ]; then
-    # Sync with latest sources
-    echo -e "${bldcya}Fetching latest sources${rst}"
-    repo sync -j"$opt_jobs"
-    echo ""
-elif [ "$opt_sync" -eq 2 ]; then
-    # Take snapshot of current sources
-    echo -e "${bldcya}Making a snapshot of the repo${rst}"
-    repo manifest -o snapshot-"$device".xml -r
-    echo ""
-elif [ "$opt_sync" -eq 3 ]; then
-    # Restore snapshot tree, then sync with latest sources
-    echo -e "${bldcya}Restoring last snapshot of sources${rst}"
-    echo ""
-    cp snapshot-"$device".xml .repo/manifests/
-
-    # Prevent duplicate projects
-    cd .repo/local_manifests
-    for file in *.xml; do
-        mv "$file" "$(echo $file | sed 's/\(.*\.\)xml/\1xmlback/')"
-    done
-
-    # Start snapshot file
-    cd "$DIR"
-    repo init -m snapshot-"$device".xml
-    echo -e "${bldcya}Fetching snapshot sources${rst}"
-    echo ""
-    repo sync -d -j"$opt_jobs"
-
-    # Prevent duplicate backups
-    cd .repo/local_manifests
-    for file in *.xmlback; do
-        mv "$file" "$(echo $file | sed 's/\(.*\.\)xmlback/\1xml/')"
-    done
-
-    # Remove snapshot file
-    cd "$DIR"
-    rm -f .repo/manifests/snapshot-"$device".xml
-    repo init
-fi
-
 # Setup environment
 echo -e "${bldcya}Setting up environment${rst}"
 echo -e "${bldmag}${line}${rst}"
@@ -276,13 +191,6 @@ echo ""
 echo -e "${bldcya}Lunching device${rst}"
 lunch "kek_$device-userdebug"
 
-# Pipe option
-if [ "$opt_pipe" -ne 0 ]; then
-    export TARGET_USE_PIPE=true
-else
-    unset TARGET_USE_PIPE
-fi
-
 # Get extra options for build
 if [ "$opt_extra" -eq 1 ]; then
     opt_v=" "showcommands
@@ -290,18 +198,6 @@ elif [ "$opt_extra" -eq 2 ]; then
     opt_v=" "-s
 else
     opt_v=""
-fi
-
-# Ignore minor errors during build
-if [ "$opt_ignore" -eq 1 ]; then
-    opt_i=" "-k
-    export TARGET_IGNORE_ERRORS=true
-    echo -e "true" > .ignore_err
-    if [ "$opt_log" -eq 0 ]; then
-        opt_log=1
-    fi
-else
-    opt_i=""
 fi
 
 # Log file options
