@@ -1,0 +1,44 @@
+[
+  {
+    "remote": "github",
+    "repository": "KekROM/android_device_yu_tomato",
+    "target_path": "device/yu/tomato",
+    "revision": "kek-5.1"
+  },
+  {
+    "remote": "github",
+    "repository": "KekROM/android_device_cyanogen_msm8939-common",
+    "target_path": "device/cyanogen/msm8939-common",
+    "revision": "kek-5.1"
+  },
+  {
+    "remote": "github",
+    "repository": "CyanogenMod/android_device_qcom_common",
+    "target_path": "device/qcom/common",
+    "revision": "cm-12.1"
+  },
+  {
+    "remote": "github",
+    "repository": "CyanogenMod/android_external_mm-dash",
+    "target_path": "external/mm-dash",
+    "revision": "cm-12.1"
+  },
+  {
+    "remote": "github",
+    "repository": "CyanogenMod/android_hardware_qcom_fm",
+    "target_path": "hardware/qcom/fm",
+    "revision": "cm-12.1"
+  },
+  {
+    "remote": "github",
+    "repository": "CyanogenMod/android_kernel_cyanogen_msm8916",
+    "target_path": "kernel/cyanogen/msm8916",
+    "revision": "cm-12.1"
+  },
+  {
+    "remote": "github",
+    "repository": "TheMuppets/proprietary_vendor_yu",
+    "target_path": "vendor/yu",
+    "revision": "cm-12.1"
+  }
+]
