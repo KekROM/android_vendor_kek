@@ -1,2 +1,2 @@
-# Generic
-add_lunch_combo kek_test-userdebug
+# YU
+add_lunch_combo kek_tomato-userdebug
