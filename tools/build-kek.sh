@@ -324,7 +324,7 @@ elif [ "$opt_only" -eq 2 ]; then
     echo ""
     make -j$opt_jobs$opt_v$opt_i recoveryimage
 else
-    echo -e "${bldcya}Starting compilation: ${bldgrn}Building ${bldylw}KEK-ROM ${bldmag}$KEK_VERSION_MAJOR ${bldcya}$KEK_VERSION_MINOR ${bldred}$$KEK_VERSION_MAINTENANCE${rst}"
+    echo -e "${bldcya}Starting compilation: ${bldgrn}Building ${bldylw}KEK-ROM ${bldmag}$KEK_VERSION_MAJOR ${bldcya}$KEK_VERSION_MINOR ${bldred}$KEK_VERSION_MAINTENANCE${rst}"
     echo ""
     make -j$opt_jobs$opt_v$opt_i bacon
 fi
