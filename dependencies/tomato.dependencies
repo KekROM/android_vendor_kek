@@ -1,15 +1,15 @@
 [
   {
     "remote": "github",
-    "repository": "KekROM/android_device_yu_tomato",
+    "repository": "CyanogenMod/android_device_yu_tomato",
     "target_path": "device/yu/tomato",
-    "revision": "kek-5.1"
+    "revision": "cm-12.1"
   },
   {
     "remote": "github",
-    "repository": "KekROM/android_device_cyanogen_msm8939-common",
+    "repository": "CyanogenMod/android_device_cyanogen_msm8939-common",
     "target_path": "device/cyanogen/msm8939-common",
-    "revision": "kek-5.1"
+    "revision": "cm-12.1"
   },
   {
     "remote": "github",
