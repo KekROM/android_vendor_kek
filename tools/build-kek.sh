@@ -51,17 +51,12 @@ usage() {
 . ./vendor/kek/tools/colors
 
 # Kek version
-export KEK_VERSION_MAJOR="Alpha"
-export KEK_VERSION_MINOR="Testing"
-export KEK_VERSION_MAINTENANCE="Unofficial"
+export KEK_VERSION="alpha"
 
 # Default global variable values with preference to environmant.
 if [ -z "${USE_CCACHE}" ]; then
     export USE_CCACHE=1
 fi
-
-# Maintenance logic
-export KEK_VERSION="$KEK_VERSION_MAJOR $KEK_VERSION_MINOR $KEK_VERSION_MAINTENANCE"
 
 # Check directories
 if [ ! -d ".repo" ]; then
@@ -220,7 +215,7 @@ elif [ "$opt_only" -eq 2 ]; then
     echo ""
     make -j$opt_jobs$opt_v$opt_i recoveryimage
 else
-    echo -e "${bldcya}Starting compilation: ${bldgrn}Building ${bldylw}KEK-ROM ${bldmag}$KEK_VERSION_MAJOR ${bldcya}$KEK_VERSION_MINOR ${bldred}$KEK_VERSION_MAINTENANCE${rst}"
+    echo -e "${bldcya}Starting compilation: ${bldgrn}Building ${bldcya}KEK-ROM $KEK_VERSION${rst}"
     echo ""
     make -j$opt_jobs$opt_v$opt_i bacon
 fi
@@ -228,4 +223,4 @@ fi
 
 # Cleanup unused built
 rm -f "$OUTDIR"/target/product/"$device"/cm-*.*
-rm -f "$OUTDIR"/target/product/"$device"/kek_*-ota*.zip
+rm -f "$OUTDIR"/target/product/"$device"/kek-*-ota*.zip
