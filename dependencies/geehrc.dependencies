@@ -1,0 +1,20 @@
+[
+    {
+        "remote": "github",
+        "repository": "lollipop-og/android_device_lge_geehrc",
+        "target_path": "device/lge/geehrc",
+        "revision": "cm-12.0"
+    },
+    {
+        "remote": "github",
+        "repository": "lollipop-og/bricked-geehrc",
+        "target_path": "kernel/lge/gee",
+        "revision": "master-exp"
+    },
+    {
+        "remote": "github",
+        "repository": "lollipop-og/vendor_lge_gee",
+        "target_path": "vendor/lge",
+        "revision": "master"
+    }
+]
