@@ -16,5 +16,11 @@
         "target_path": "kernel/sony/apq8064",
         "remote": "github",
         "branch": "lp5.1"
+    },
+    {
+        "repository": "DonkeyCoyote/proprietary_vendor_sony",
+        "target_path": "vendor/sony",
+        "remote": "github",
+        "branch": "android-5.1"
     }
 ]
