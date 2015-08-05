@@ -50,9 +50,6 @@ usage() {
 # Import Colors
 . ./vendor/kek/tools/colors
 
-# Kek version
-export KEK_VERSION="alpha"
-
 # Default global variable values with preference to environmant.
 if [ -z "${USE_CCACHE}" ]; then
     export USE_CCACHE=1
@@ -219,8 +216,3 @@ else
     echo ""
     make -j$opt_jobs$opt_v$opt_i bacon
 fi
-
-
-# Cleanup unused built
-rm -f "$OUTDIR"/target/product/"$device"/cm-*.*
-rm -f "$OUTDIR"/target/product/"$device"/kek-*-ota*.zip
